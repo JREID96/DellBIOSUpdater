@@ -1,0 +1,215 @@
+Add-Type -AssemblyName System.Windows.Forms
+[System.Windows.Forms.Application]::EnableVisualStyles()
+
+#region begin GUI{ 
+
+$Form                            = New-Object system.Windows.Forms.Form
+$Form.ClientSize                 = '300,350'
+$Form.text                       = "Dell BIOS Uploader"
+$Form.TopMost                    = $false
+
+$ModelLabel                      = New-Object system.Windows.Forms.Label
+$ModelLabel.text                 = "Choose a model:"
+$ModelLabel.AutoSize             = $true
+$ModelLabel.width                = 25
+$ModelLabel.height               = 10
+$ModelLabel.location             = New-Object System.Drawing.Point(1,0)
+$ModelLabel.Font                 = 'Microsoft Sans Serif,10'
+
+
+$3020Radio                       = New-Object system.Windows.Forms.RadioButton
+$3020Radio.text                  = "Optiplex 3020"
+$3020Radio.AutoSize              = $true
+$3020Radio.width                 = 104
+$3020Radio.height                = 20
+$3020Radio.location              = New-Object System.Drawing.Point(1,20)
+$3020Radio.Font                  = 'Microsoft Sans Serif,10'
+
+$3040Radio                       = New-Object system.Windows.Forms.RadioButton
+$3040Radio.text                  = "Optiplex 3040"
+$3040Radio.AutoSize              = $true
+$3040Radio.width                 = 104
+$3040Radio.height                = 20
+$3040Radio.location              = New-Object System.Drawing.Point(1,40)
+$3040Radio.Font                  = 'Microsoft Sans Serif,10'
+
+$3050Radio                       = New-Object system.Windows.Forms.RadioButton
+$3050Radio.text                  = "Optiplex 3050"
+$3050Radio.AutoSize              = $true
+$3050Radio.width                 = 104
+$3050Radio.height                = 20
+$3050Radio.location              = New-Object System.Drawing.Point(1,60)
+$3050Radio.Font                  = 'Microsoft Sans Serif,10'
+
+$3060Radio                       = New-Object system.Windows.Forms.RadioButton
+$3060Radio.text                  = "Optiplex 3060"
+$3060Radio.AutoSize              = $true
+$3060Radio.width                 = 104
+$3060Radio.height                = 20
+$3060Radio.location              = New-Object System.Drawing.Point(1,80)
+$3060Radio.Font                  = 'Microsoft Sans Serif,10'
+
+$7050Radio                       = New-Object system.Windows.Forms.RadioButton
+$7050Radio.text                  = "Optiplex 7050"
+$7050Radio.AutoSize              = $true
+$7050Radio.width                 = 104
+$7050Radio.height                = 20
+$7050Radio.location              = New-Object System.Drawing.Point(1,100)
+$7050Radio.Font                  = 'Microsoft Sans Serif,10'
+
+$5820Radio                       = New-Object system.Windows.Forms.RadioButton
+$5820Radio.text                  = "Precision 5820 Tower"
+$5820Radio.AutoSize              = $true
+$5820Radio.width                 = 104
+$5820Radio.height                = 20
+$5820Radio.location              = New-Object System.Drawing.Point(1,120)
+$5820Radio.Font                  = 'Microsoft Sans Serif,10'
+
+$BrowseLabel                     = New-Object system.Windows.Forms.Label
+$BrowseLabel.text                = "Select the new BIOS file:"
+$BrowseLabel.AutoSize            = $true
+$BrowseLabel.width               = 25
+$BrowseLabel.height              = 10
+$BrowseLabel.location            = New-Object System.Drawing.Point(1,200)
+$BrowseLabel.Font                = 'Microsoft Sans Serif,10'
+
+$BrowseButton                    = New-Object system.Windows.Forms.Button
+$BrowseButton.text               = "Browse"
+$BrowseButton.width              = 60
+$BrowseButton.height             = 30
+$BrowseButton.location           = New-Object System.Drawing.Point(1,220)
+$BrowseButton.Font               = 'Microsoft Sans Serif,10'
+
+$UploadLabel                     = New-Object system.Windows.Forms.Label
+$UploadLabel.text                = "Click to upload the new BIOS:"
+$UploadLabel.AutoSize            = $true
+$UploadLabel.width               = 25
+$UploadLabel.height              = 10
+$UploadLabel.location            = New-Object System.Drawing.Point(1,260)
+$UploadLabel.Font                = 'Microsoft Sans Serif,10'
+
+$Upload                          = New-Object system.Windows.Forms.Button
+$Upload.text                     = "Upload"
+$Upload.width                    = 60
+$Upload.height                   = 30
+$Upload.location                 = New-Object System.Drawing.Point(1,280)
+$Upload.Font                     = 'Microsoft Sans Serif,10'
+
+$StatusText                      = New-Object system.Windows.Forms.TextBox
+$StatusText.multiline            = $false
+$StatusText.text                 = ""
+$StatusText.width                = 150
+$StatusText.height               = 20
+$StatusText.location             = New-Object System.Drawing.Point(1,320)
+$StatusText.Font                 = 'Microsoft Sans Serif,10'
+
+$Form.controls.AddRange(@($3020Radio,$3040Radio,$3050Radio,$3060Radio, $ModelLabel,$7050Radio, $5820Radio,$BrowseLabel,$BrowseButton,$UploadLabel,$Upload,$StatusText))
+
+### region gui events {
+
+$global:SelectedModel = ""
+
+### START RADIO BUTTONS
+$3020Radio.Add_CheckedChanged({ 
+if($3020Radio.checked){$global:SelectedModel = "Dell3020"}
+ })
+
+$3040Radio.Add_CheckedChanged({ 
+if($3040Radio.checked){$global:SelectedModel = "Dell3040"}
+ })
+
+$3050Radio.Add_CheckedChanged({ 
+if($3050Radio.checked){$global:SelectedModel = "Dell3050"}
+ })
+
+ $3060Radio.Add_CheckedChanged({ 
+if($3060Radio.checked){$global:SelectedModel = "Dell3060"}
+ })
+
+$7050Radio.Add_CheckedChanged({ 
+if($7050Radio.checked){$global:SelectedModel = "Dell7050"}
+ })
+
+$5820Radio.Add_CheckedChanged({ 
+if($5820Radio.checked){$global:SelectedModel = "Dell5820"}
+ })
+ ### END RADIO BUTTONS
+
+ ### START BROWSE BUTTON
+$BrowseButton.Add_MouseClick({  
+if($BrowseButton.Add_Click){
+ [System.Reflection.Assembly]::LoadWithPartialName("System.windows.forms") |
+ Out-Null
+
+ $OpenFileDialog = New-Object System.Windows.Forms.OpenFileDialog
+ $OpenFileDialog.initialDirectory = $initialDirectory
+ $OpenFileDialog.filter = "All files (*.*)| *.*"
+ $OpenFileDialog.ShowDialog() | Out-Null
+ $OpenFileDialog.filename
+ $Global:SelectedFile = $OpenFileDialog.filename
+ }
+})
+### END BROWSE BUTTON
+
+$Upload.Add_MouseClick({
+    if($Upload.Add_Click){Process-File}
+    })
+
+#endregion events }
+
+#endregion GUI }
+
+
+### Write your logic code here
+Function Process-File{
+
+    ### begin try
+    try {
+
+        if ($global:SelectedModel -eq "Dell3020"){
+            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\Dell\DellBIOSUpdater\newbios3020.exe"
+             $StatusText.ForeColor = "green"
+             $StatusText.text = "Upload Successful"
+             }
+       
+        if ($global:SelectedModel -eq "Dell3040"){
+            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\Dell\DellBIOSUpdater\newbios3040.exe"
+             $StatusText.ForeColor = "green"
+             $StatusText.text = "Upload Successful"
+            }
+
+        if ($global:SelectedModel -eq "Dell3050"){
+            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\Dell\DellBIOSUpdater\newbios3050.exe"
+             $StatusText.ForeColor = "green"
+             $StatusText.text = "Upload Successful"
+            }
+
+        if ($global:SelectedModel -eq "Dell3060"){
+            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\Dell\DellBIOSUpdater\newbios3060.exe"
+             $StatusText.ForeColor = "green"
+             $StatusText.text = "Upload Successful"
+            }
+
+        if ($global:SelectedModel -eq "Dell7050"){
+            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\Dell\DellBIOSUpdater\newbios7050.exe"
+            $StatusText.ForeColor = "green"
+            $StatusText.text = "Upload Successful"
+            }
+
+        if ($global:SelectedModel -eq "Dell5820"){
+            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\Dell\DellBIOSUpdater\newbios5820.exe"
+            $StatusText.ForeColor = "green"
+            $StatusText.text = "Upload Successful"
+            }
+
+    }### end try
+
+    catch {
+        $StatusText.ForeColor = "red"
+        $StatusText.text = "An error occured!"
+        
+    }
+
+        }### Logic End
+
+[void]$Form.ShowDialog()
