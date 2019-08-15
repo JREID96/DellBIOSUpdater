@@ -8,6 +8,14 @@ $Form.ClientSize                 = '300,350'
 $Form.text                       = "Dell BIOS Uploader"
 $Form.TopMost                    = $false
 
+#This base64 string holds the bytes that make up the icon
+$iconBase64      = ''
+$iconBytes       = [Convert]::FromBase64String($iconBase64)
+$stream          = New-Object IO.MemoryStream($iconBytes, 0, $iconBytes.Length)
+$stream.Write($iconBytes, 0, $iconBytes.Length);
+$iconImage       = [System.Drawing.Image]::FromStream($stream, $true)
+$Form.Icon       = [System.Drawing.Icon]::FromHandle((New-Object System.Drawing.Bitmap -Argument $stream).GetHIcon())
+
 $ModelLabel                      = New-Object system.Windows.Forms.Label
 $ModelLabel.text                 = "Choose a model:"
 $ModelLabel.AutoSize             = $true
@@ -57,12 +65,21 @@ $7050Radio.height                = 20
 $7050Radio.location              = New-Object System.Drawing.Point(1,100)
 $7050Radio.Font                  = 'Microsoft Sans Serif,10'
 
+
+$7060Radio                       = New-Object system.Windows.Forms.RadioButton
+$7060Radio.text                  = "Optiplex 7060"
+$7060Radio.AutoSize              = $true
+$7060Radio.width                 = 104
+$7060Radio.height                = 20
+$7060Radio.location              = New-Object System.Drawing.Point(1,120)
+$7060Radio.Font                  = 'Microsoft Sans Serif,10'
+
 $5820Radio                       = New-Object system.Windows.Forms.RadioButton
 $5820Radio.text                  = "Precision 5820 Tower"
 $5820Radio.AutoSize              = $true
 $5820Radio.width                 = 104
 $5820Radio.height                = 20
-$5820Radio.location              = New-Object System.Drawing.Point(1,120)
+$5820Radio.location              = New-Object System.Drawing.Point(1,140)
 $5820Radio.Font                  = 'Microsoft Sans Serif,10'
 
 $BrowseLabel                     = New-Object system.Windows.Forms.Label
@@ -103,7 +120,7 @@ $StatusText.height               = 20
 $StatusText.location             = New-Object System.Drawing.Point(1,320)
 $StatusText.Font                 = 'Microsoft Sans Serif,10'
 
-$Form.controls.AddRange(@($3020Radio,$3040Radio,$3050Radio,$3060Radio, $ModelLabel,$7050Radio, $5820Radio,$BrowseLabel,$BrowseButton,$UploadLabel,$Upload,$StatusText))
+$Form.controls.AddRange(@($3020Radio,$3040Radio,$3050Radio,$3060Radio, $ModelLabel,$7050Radio, $7060Radio, $5820Radio,$BrowseLabel,$BrowseButton,$UploadLabel,$Upload,$StatusText))
 
 ### region gui events {
 
@@ -128,6 +145,10 @@ if($3060Radio.checked){$global:SelectedModel = "Dell3060"}
 
 $7050Radio.Add_CheckedChanged({ 
 if($7050Radio.checked){$global:SelectedModel = "Dell7050"}
+ })
+
+$7060Radio.Add_CheckedChanged({ 
+if($7060Radio.checked){$global:SelectedModel = "Dell7060"}
  })
 
 $5820Radio.Add_CheckedChanged({ 
@@ -167,37 +188,43 @@ Function Process-File{
     try {
 
         if ($global:SelectedModel -eq "Dell3020"){
-            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\Dell\DellBIOSUpdater\newbios3020.exe"
+            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\UserShares\Dept-IT\ServiceCatalog-Technical\_Drivers-Firmware\Dell\DellBIOSUpdater\newbios3020.exe"
              $StatusText.ForeColor = "green"
              $StatusText.text = "Upload Successful"
              }
        
         if ($global:SelectedModel -eq "Dell3040"){
-            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\Dell\DellBIOSUpdater\newbios3040.exe"
+            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\UserShares\Dept-IT\ServiceCatalog-Technical\_Drivers-Firmware\Dell\DellBIOSUpdater\newbios3040.exe"
              $StatusText.ForeColor = "green"
              $StatusText.text = "Upload Successful"
             }
 
         if ($global:SelectedModel -eq "Dell3050"){
-            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\Dell\DellBIOSUpdater\newbios3050.exe"
+            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\UserShares\Dept-IT\ServiceCatalog-Technical\_Drivers-Firmware\Dell\DellBIOSUpdater\newbios3050.exe"
              $StatusText.ForeColor = "green"
              $StatusText.text = "Upload Successful"
             }
 
         if ($global:SelectedModel -eq "Dell3060"){
-            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\Dell\DellBIOSUpdater\newbios3060.exe"
+            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\UserShares\Dept-IT\ServiceCatalog-Technical\_Drivers-Firmware\Dell\DellBIOSUpdater\newbios3060.exe"
              $StatusText.ForeColor = "green"
              $StatusText.text = "Upload Successful"
             }
 
         if ($global:SelectedModel -eq "Dell7050"){
-            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\Dell\DellBIOSUpdater\newbios7050.exe"
+            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\UserShares\Dept-IT\ServiceCatalog-Technical\_Drivers-Firmware\Dell\DellBIOSUpdater\newbios7050.exe"
+            $StatusText.ForeColor = "green"
+            $StatusText.text = "Upload Successful"
+            }
+
+        if ($global:SelectedModel -eq "Dell7060"){
+            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\UserShares\Dept-IT\ServiceCatalog-Technical\_Drivers-Firmware\Dell\DellBIOSUpdater\newbios7060.exe"
             $StatusText.ForeColor = "green"
             $StatusText.text = "Upload Successful"
             }
 
         if ($global:SelectedModel -eq "Dell5820"){
-            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\Dell\DellBIOSUpdater\newbios5820.exe"
+            Copy-Item -Path $Global:SelectedFile -Destination "\\fileserver\UserShares\Dept-IT\ServiceCatalog-Technical\_Drivers-Firmware\Dell\DellBIOSUpdater\newbios5820.exe"
             $StatusText.ForeColor = "green"
             $StatusText.text = "Upload Successful"
             }
