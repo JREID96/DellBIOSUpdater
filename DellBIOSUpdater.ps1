@@ -77,4 +77,4 @@ switch ($model) {
 Suspend-BitLocker -MountPoint C: -RebootCount 1 
 
 ### Silently starts the BIOS update, and gives the machine the 1 reboot it needs to re-encrypt the drive.
-C:\Temp\newbios.exe /s /r /p=BIOSdome480
+C:\Temp\newbios.exe /s /r /p=
