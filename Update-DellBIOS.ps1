@@ -1,5 +1,5 @@
 <# 
-Dell BIOS Updater v2.1.1
+Dell BIOS Updater v2.1.2
 Automatically updates the BIOS of Dell machines. Files are pulled from \\fileserver\UserShares\Dept-IT\ServiceCatalog-Technical\_Drivers-Firmware\Dell\DellBIOSUpdater\
 You can use the DellBIOSUpdater.exe utility to upload updated Dell BIOS executables (Found inside the same directory)
 Jarred Reid 2019
