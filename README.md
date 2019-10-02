@@ -7,6 +7,8 @@ Jarred Reid 2019
 
 Changelog: 
 
+2.1.2 - Further script code trimming
+
 2.1.1 - Moved logic from multiple "if" statements over to a single switch parameter and added support for Dell Optiplex 3070
 
 2.0 - Added support for Optiplex 7060s
